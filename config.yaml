@@ -1,0 +1,13 @@
+functions:
+  - execdata:
+    - name: "k8s get namespace"
+      cmd: kubectl
+      args: ["get", "ns"]
+  - execdata:
+    - name: echoing
+      cmd: echo
+      args: ["hi there"]
+    - name: lsing
+      cmd: ls
+      args: ["."]
+
