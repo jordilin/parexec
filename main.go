@@ -57,7 +57,9 @@ func (e *execData) add(fs execfunc) {
 }
 
 // executor is a worker that receives data to be executed. The data contains the
-// functions to be executed along with its command line arguments
+// functions to be executed.
+// This will run inside a goroutine receiving executable data execData which
+// contains an array of functions to be executed one after another.
 func executor(edataCh <-chan *execData, wg *sync.WaitGroup) {
 	for edata := range edataCh {
 		for _, f := range edata.fs {
@@ -70,6 +72,33 @@ func executor(edataCh <-chan *execData, wg *sync.WaitGroup) {
 	wg.Done()
 }
 
+// processConfig reads the config yaml of the functions that need to be
+// executed. A top level functions key has an array of execdata (executable
+// data), which in turn is an array of functions that will be executed one
+// after the other. execdata blocks will be executed in parallel.
+// Ex:
+//
+// ---
+// functions:
+//   - execdata:
+//     - name: "k8s get namespace"
+//       cmd: kubectl
+//       args: ["get", "ns"]
+//   - execdata:
+//     - name: echoing
+//       cmd: echo
+//       args: ["hi there"]
+//     - name: lsing
+//       cmd: ls
+//       args: ["."]
+// ---
+//
+// Will be executed as follows
+//
+//	         ---> worker-0 => execute [kubectl get ns]
+//   master /
+//          \
+//           ---> worker-1 => execute [echo "hi there", ls "."]
 func processConfig(config string) []*execData {
 	c, err := readYaml("config.yaml")
 	if err != nil {
