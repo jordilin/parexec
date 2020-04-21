@@ -102,7 +102,7 @@ func executor(edataCh <-chan *execData, wg *sync.WaitGroup) {
 //
 // Will be executed as follows
 //
-//	         ---> worker-0 => execute [kubectl get ns]
+//           ---> worker-0 => execute [kubectl get ns]
 //   master /
 //          \
 //           ---> worker-1 => execute [echo "hi there", ls "."]
