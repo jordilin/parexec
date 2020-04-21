@@ -10,4 +10,3 @@ functions:
     - name: lsing
       cmd: ls
       args: ["."]
-

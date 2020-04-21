@@ -1,4 +1,4 @@
-module github.com/jordilin/kubed3d
+module github.com/jordilin/parexec
 
 go 1.12
 

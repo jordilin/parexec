@@ -1,4 +1,4 @@
 all: build
 
 build:
-	go build -o kubed3d github.com/jordilin/kubed3d/
+	go build -o parexec github.com/jordilin/parexec
