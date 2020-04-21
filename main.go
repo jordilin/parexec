@@ -1,3 +1,10 @@
+// Copyright 2020 Jordi Carrillo. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// parexec executes shell commands sequentially and in parallel given a yaml
+// resource description.
+
 package main
 
 import (
