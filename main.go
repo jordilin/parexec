@@ -9,6 +9,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -106,7 +107,7 @@ func executor(edataCh <-chan *execData, wg *sync.WaitGroup) {
 //   master /
 //          \
 //           ---> worker-1 => execute [echo "hi there", ls "."]
-func processConfig(config string) []*execData {
+func processConfig(config *string) []*execData {
 	c, err := readYaml("config.yaml")
 	if err != nil {
 		log.Fatal(err)
@@ -147,7 +148,9 @@ func buildFunc(clargs *cli) execfunc {
 }
 
 func main() {
-	eds := processConfig("config.yaml")
+	config := flag.String("config", "config.yaml", "path to the config.yaml file")
+	flag.Parse()
+	eds := processConfig(config)
 	var wg sync.WaitGroup
 	workers := runtime.NumCPU()
 	wg.Add(workers)
